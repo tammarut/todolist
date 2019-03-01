@@ -1,10 +1,9 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	"github.com/tammarut/todolist-recap/handler"
 )
 
 func main() {
@@ -17,14 +16,12 @@ func main() {
 	}))
 	e.Use(middleware.Recover())
 
+	// Intial Handler
+	h := handler.Handler{}
+
 	// Routes
-	e.GET("/", hello)
+	e.GET("/", h.Hello)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
-}
-
-// Handler
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
 }
