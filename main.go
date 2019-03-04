@@ -11,7 +11,8 @@ import (
 )
 
 type List struct {
-	Topic string `json: "topic"`
+	Id    string `json: "id, omitempty"`
+	Topic string `json: "topic, omitempty"`
 }
 
 func main() {
@@ -36,11 +37,11 @@ func main() {
 }
 
 func saveList(c echo.Context) error {
-	list := new(List)
-	if err := c.Bind(list); err != nil {
+	var list *List
+	if err := c.Bind(&list); err != nil {
 		log.Println("Error: from saveList", err)
 		c.String(http.StatusInternalServerError, "Error: from c.Bind func saveList")
 	}
-	fmt.Printf("%v#\n", list)
+	fmt.Printf("%#v\n", list)
 	return c.JSON(http.StatusCreated, list)
 }
