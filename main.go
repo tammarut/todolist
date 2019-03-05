@@ -11,8 +11,8 @@ import (
 )
 
 type List struct {
-	ID    int    `json: "id, omitempty"`
-	Title string `json: "title, omitempty"`
+	ID    int    `json:"id"`
+	Title string `json:"title"`
 }
 
 var lists []List
@@ -33,14 +33,14 @@ func main() {
 	// Routes
 	e.GET("/", h.Hello)              //=> Hello world
 	e.GET("/todos/:id", getListById) //=> get list by id
-	e.GET("/todos", getLists)        //=> get all lists
+	e.GET("/todos", getAllLists)     //=> get all lists
 	e.POST("/todos", saveList)       //=> post list from body
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func saveList(c echo.Context) error {
+func saveList(c echo.Context) error { //=> post
 	var l List
 	if err := c.Bind(&l); err != nil {
 		log.Println("Error: from saveList", err)
@@ -51,8 +51,8 @@ func saveList(c echo.Context) error {
 	return c.JSON(http.StatusCreated, l)
 }
 
-func getLists(c echo.Context) error { //=> get all lists: OK
-	return c.JSON(http.StatusOK, lists)
+func getAllLists(c echo.Context) error { //=> get all lists: OK
+	return c.JSON(http.StatusOK, &lists)
 }
 
 func getListById(c echo.Context) error {
