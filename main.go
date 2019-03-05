@@ -11,9 +11,11 @@ import (
 )
 
 type List struct {
-	Id    string `json: "id, omitempty"`
-	Topic string `json: "topic, omitempty"`
+	ID    int    `json: "id, omitempty"`
+	Title string `json: "title, omitempty"`
 }
+
+var lists []List
 
 func main() {
 	// Echo instance
@@ -29,19 +31,33 @@ func main() {
 	h := handler.Handler{}
 
 	// Routes
-	e.GET("/", h.Hello)
-	e.POST("/todos", saveList)
+	e.GET("/", h.Hello)              //=> Hello world
+	e.GET("/todos/:id", getListById) //=> get list by id
+	e.GET("/todos", getLists)        //=> get all lists
+	e.POST("/todos", saveList)       //=> post list from body
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
 func saveList(c echo.Context) error {
-	var list *List
-	if err := c.Bind(&list); err != nil {
+	var l List
+	if err := c.Bind(&l); err != nil {
 		log.Println("Error: from saveList", err)
-		c.String(http.StatusInternalServerError, "Error: from c.Bind func saveList")
 	}
-	fmt.Printf("%#v\n", list)
-	return c.JSON(http.StatusCreated, list)
+
+	lists = append(lists, l)
+	fmt.Printf("%#v\n", l)
+	return c.JSON(http.StatusCreated, l)
+}
+
+func getLists(c echo.Context) error { //=> get all lists: OK
+	return c.JSON(http.StatusOK, lists)
+}
+
+func getListById(c echo.Context) error {
+	id := c.QueryParam("id")
+	return c.JSON(http.StatusOK, map[string]string{
+		"id": id,
+	})
 }
