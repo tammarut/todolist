@@ -11,11 +11,11 @@ import (
 )
 
 type List struct {
-	ID    int    `json:"id"`
+	ID    string `json:"id"`
 	Title string `json:"title"`
 }
 
-var lists []List
+var lists []List //=> global list
 
 func main() {
 	// Echo instance
@@ -40,7 +40,7 @@ func main() {
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func saveList(c echo.Context) error { //=> post
+func saveList(c echo.Context) error { //=> post only 1
 	var l List
 	if err := c.Bind(&l); err != nil {
 		log.Println("Error: from saveList", err)
@@ -55,9 +55,12 @@ func getAllLists(c echo.Context) error { //=> get all lists: OK
 	return c.JSON(http.StatusOK, &lists)
 }
 
-func getListById(c echo.Context) error {
-	id := c.QueryParam("id")
-	return c.JSON(http.StatusOK, map[string]string{
-		"id": id,
-	})
+func getListById(c echo.Context) error { //=> get 1 list by id
+	id := c.Param("id")
+	for i, v := range lists {
+		if v.ID == id {
+			return c.JSON(http.StatusOK, lists[i])
+		}
+	}
+	return c.JSON(http.StatusNotFound, "Not found this id")
 }
