@@ -57,8 +57,8 @@ func getAllLists(c echo.Context) error { //=> get all lists: OK
 
 func getListById(c echo.Context) error { //=> get 1 list by id
 	id := c.Param("id")
-	for i, v := range lists {
-		if v.ID == id {
+	for i := range lists {
+		if lists[i].ID == id {
 			return c.JSON(http.StatusOK, lists[i])
 		}
 	}
