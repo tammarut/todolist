@@ -66,8 +66,15 @@ func getListByID(c echo.Context) error { //=> get 1 list by id
 	return c.JSON(http.StatusNotFound, "Not found this id")
 }
 func deleteByID(c echo.Context) error {
-	//id := c.Param("id")
-	return c.JSON(http.StatusBadRequest, map[string]string{
-		"message": "Not found this ID",
-	})
+	id := c.Param("id")
+
+	filterLists := []List{}
+	for _, item := range lists {
+		if item.ID != id {
+			filterLists = append(filterLists, item)
+		}
+	}
+
+	lists = filterLists
+	return c.JSON(http.StatusOK, lists)
 }
