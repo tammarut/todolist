@@ -31,10 +31,11 @@ func main() {
 	h := handler.Handler{}
 
 	// Routes
-	e.GET("/", h.Hello)              //=> Hello world
-	e.GET("/todos/:id", getListById) //=> get list by id
-	e.GET("/todos", getAllLists)     //=> get all lists
-	e.POST("/todos", saveList)       //=> post list from body
+	e.GET("/", h.Hello)                //=> Hello world
+	e.GET("/todos/:id", getListByID)   //=> get list by id
+	e.GET("/todos", getAllLists)       //=> get all lists
+	e.POST("/todos", saveList)         //=> post list from body
+	e.DELETE("/todos/:id", deleteByID) //=>delete a list by id
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
@@ -55,7 +56,7 @@ func getAllLists(c echo.Context) error { //=> get all lists: OK
 	return c.JSON(http.StatusOK, &lists)
 }
 
-func getListById(c echo.Context) error { //=> get 1 list by id
+func getListByID(c echo.Context) error { //=> get 1 list by id
 	id := c.Param("id")
 	for i := range lists {
 		if lists[i].ID == id {
@@ -63,4 +64,10 @@ func getListById(c echo.Context) error { //=> get 1 list by id
 		}
 	}
 	return c.JSON(http.StatusNotFound, "Not found this id")
+}
+func deleteByID(c echo.Context) error {
+	//id := c.Param("id")
+	return c.JSON(http.StatusBadRequest, map[string]string{
+		"message": "Not found this ID",
+	})
 }
