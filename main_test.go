@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	//=>Mock-up AllLists because it runs on memory.
+	//=>Mock-up Lists because it runs on memory.
 	mockAllLists = []model.List{
 	{
       ID:"1",
@@ -24,10 +24,11 @@ var (
    	{
       ID :"3",
       Title:"sleeping",
-   	},
-}
+   	},}
+
 	//=>Expected
 	allLists = `[{"id":"1","title":"excercise"},{"id":"2","title":"play game"},{"id":"3","title":"sleeping"}]`
+	AList = `{"id":"2","title":"play game"}`
 )
 
 func TestHelloShouldReturnHellotodolist(t *testing.T) {
@@ -51,11 +52,28 @@ func TestGetAllListsShouldReturnAllOfTodoLists(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/todos") //=>set path(url)
-	lists = mockAllLists
+	lists = mockAllLists//=>dump(mock) new lists
 
 	//.Assertions
 	if assert.NoError(t, getAllLists(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, allLists+"\n", rec.Body.String())
+	}
+}
+func TestGetListByIDWhenGotParamShouldReturnOneList(t *testing.T){
+	//.Setup
+	 e := echo.New()
+	 req := httptest.NewRequest(http.MethodGet, "/", nil)
+	 rec := httptest.NewRecorder()
+	 c := e.NewContext(req, rec)
+	 c.SetPath("/todos/:id")
+	 c.SetParamNames("id")
+	 c.SetParamValues("2")
+	 lists = mockAllLists
+
+	//.Assertions
+	if assert.NoError(t, getListByID(c)){
+		assert.Equal(t, http.StatusOK, rec.Code)
+		assert.Equal(t, AList+"\n", rec.Body.String())
 	}
 }
