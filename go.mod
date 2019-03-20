@@ -1,4 +1,4 @@
-module github.com/tammarut/todolist-recap
+module github.com/tammarut/todolist
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect

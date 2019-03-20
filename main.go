@@ -7,14 +7,10 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/tammarut/todolist/model"
 )
 
-type List struct {
-	ID    string `json:"id,omitempty"`
-	Title string `json:"title,omitempty"`
-}
-
-var lists []List //=> global list
+var lists []model.List
 
 func main() {
 	// Echo instance
@@ -42,11 +38,10 @@ func Hello(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello todolist")
 }
 func saveList(c echo.Context) error { //=> post only 1
-	var l List
+	var l model.List
 	if err := c.Bind(&l); err != nil {
 		log.Println("Error: from saveList", err)
 	}
-
 	lists = append(lists, l)
 	fmt.Printf("%#v\n", l)
 	return c.JSON(http.StatusCreated, lists)
@@ -68,7 +63,7 @@ func getListByID(c echo.Context) error { //=> get 1 list by id
 func deleteByID(c echo.Context) error {
 	id := c.Param("id")
 
-	filterLists := []List{}
+	filterLists := []model.List{}
 	for _, item := range lists {
 		if item.ID != id {
 			filterLists = append(filterLists, item)
@@ -80,7 +75,7 @@ func deleteByID(c echo.Context) error {
 }
 
 func updateByID(c echo.Context) error {
-	newtitle := new(List)
+	newtitle := new(model.List)
 	if err := c.Bind(newtitle); err != nil {
 		log.Println("Error: from updateByID", err)
 	}
