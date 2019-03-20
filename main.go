@@ -7,7 +7,6 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/tammarut/todolist-recap/handler"
 )
 
 type List struct {
@@ -27,11 +26,8 @@ func main() {
 	}))
 	e.Use(middleware.Recover())
 
-	// Intial Handler
-	h := handler.Handler{}
-
 	// Routes
-	e.GET("/", h.Hello)                //=> Hello world
+	e.GET("/", Hello)                  //=> Hello world
 	e.GET("/todos/:id", getListByID)   //=> get list by id
 	e.GET("/todos", getAllLists)       //=> get all lists
 	e.POST("/todos", saveList)         //=> post list from body
@@ -42,6 +38,9 @@ func main() {
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
+func Hello(c echo.Context) error {
+	return c.String(http.StatusOK, "Hello todolist")
+}
 func saveList(c echo.Context) error { //=> post only 1
 	var l List
 	if err := c.Bind(&l); err != nil {
