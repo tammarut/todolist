@@ -11,8 +11,8 @@ import (
 )
 
 type List struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
+	ID    string `json:"id,omitempty"`
+	Title string `json:"title,omitempty"`
 }
 
 var lists []List //=> global list
@@ -81,7 +81,22 @@ func deleteByID(c echo.Context) error {
 }
 
 func updateByID(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{
-		"message": "We've updated for you",
+	newtitle := new(List)
+	if err := c.Bind(newtitle); err != nil {
+		log.Println("Error: from updateByID", err)
+	}
+
+	id := c.Param("id")
+	for i := range lists {
+		if lists[i].ID == id {
+			fmt.Printf("Before: %#v\n", lists[i])
+			lists[i].Title = newtitle.Title
+			fmt.Printf("After: %#v\n", lists[i])
+			return c.JSON(http.StatusOK, lists[i])
+		}
+	}
+
+	return c.JSON(http.StatusNotFound, map[string]string{
+		"message": "Not found this ID!",
 	})
 }
