@@ -89,9 +89,9 @@ func updateByID(c echo.Context) error {
 	id := c.Param("id")
 	for i := range lists {
 		if lists[i].ID == id {
-			fmt.Printf("Before: %#v\n", lists[i])
+			fmt.Printf("Before: %+v\n", lists[i])
 			lists[i].Title = newtitle.Title
-			fmt.Printf("After: %#v\n", lists[i])
+			fmt.Printf("After: %+v\n", lists[i])
 			return c.JSON(http.StatusOK, lists[i])
 		}
 	}
