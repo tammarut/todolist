@@ -12,7 +12,7 @@ import (
 
 var (
 	//=>Mock-up AllLists because it runs on memory.
-	mockup = []model.List{
+	mockAllLists = []model.List{
 	{
       ID:"1",
       Title:"excercise",
@@ -51,7 +51,7 @@ func TestGetAllListsShouldReturnAllOfTodoLists(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/todos") //=>set path(url)
-	lists = mockup
+	lists = mockAllLists
 
 	//.Assertions
 	if assert.NoError(t, getAllLists(c)) {
