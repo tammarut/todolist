@@ -36,6 +36,7 @@ func main() {
 	e.GET("/todos", getAllLists)       //=> get all lists
 	e.POST("/todos", saveList)         //=> post list from body
 	e.DELETE("/todos/:id", deleteByID) //=>delete a list by id
+	e.PATCH("/todos/:id", updateByID)  //=>update a list bu id
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
@@ -49,7 +50,7 @@ func saveList(c echo.Context) error { //=> post only 1
 
 	lists = append(lists, l)
 	fmt.Printf("%#v\n", l)
-	return c.JSON(http.StatusCreated, l)
+	return c.JSON(http.StatusCreated, lists)
 }
 
 func getAllLists(c echo.Context) error { //=> get all lists: OK
@@ -77,4 +78,10 @@ func deleteByID(c echo.Context) error {
 
 	lists = filterLists
 	return c.JSON(http.StatusOK, lists)
+}
+
+func updateByID(c echo.Context) error {
+	return c.JSON(http.StatusOK, map[string]string{
+		"message": "We've updated for you",
+	})
 }
