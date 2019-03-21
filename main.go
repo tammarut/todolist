@@ -43,8 +43,8 @@ func saveList(c echo.Context) error { //=> post only 1
 		log.Println("Error: from saveList", err)
 	}
 	lists = append(lists, l)
-	fmt.Printf("%#v\n", l)
-	return c.JSON(http.StatusCreated, lists)
+	fmt.Printf("%+v\n", l)
+	return c.JSON(http.StatusCreated, "We've created your list!")
 }
 
 func getAllLists(c echo.Context) error { //=> get all lists: OK
