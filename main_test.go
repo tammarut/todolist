@@ -79,7 +79,7 @@ func TestGetListByIDWhenGotParamShouldReturnOneList(t *testing.T) {
 	}
 }
 
-func TestSaveListWhenGotBodyRequestShouldReturnAllLists(t *testing.T) {
+func TestSaveListWhenGotBodyRequest(t *testing.T) {
 	//.Setup
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(AList))
@@ -92,3 +92,6 @@ func TestSaveListWhenGotBodyRequestShouldReturnAllLists(t *testing.T) {
 		assert.Equal(t, "\"We've created your list!\"\n", rec.Body.String())
 	}
 }
+
+func TestGetAllListsShouldReturnAllOfTodoLists
+
