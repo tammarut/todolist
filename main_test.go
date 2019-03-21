@@ -28,8 +28,9 @@ var (
 		}}
 
 	//=>Expected
-	allLists = `[{"id":"1","title":"excercise"},{"id":"2","title":"play game"},{"id":"3","title":"sleeping"}]`
-	AList    = `{"id":"2","title":"play game"}`
+	allLists         = `[{"id":"1","title":"excercise"},{"id":"2","title":"play game"},{"id":"3","title":"sleeping"}]`
+	AList            = `{"id":"2","title":"play game"}`
+	ListsWithDeleted = `[{"id":"1","title":"excercise"},{"id":"3","title":"sleeping"}]`
 )
 
 func TestHelloShouldReturnHellotodolist(t *testing.T) {
@@ -93,5 +94,21 @@ func TestSaveListWhenGotBodyRequest(t *testing.T) {
 	}
 }
 
-func TestGetAllListsShouldReturnAllOfTodoLists
+func TestDeleteByIDWhenGotParamShouldReturnAllListsWithoutIt(t *testing.T) {
+	//.Setup
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodDelete, "/", nil)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/todos/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("2")
+	lists = mockAllLists
 
+	//.Assertions
+	if assert.NoError(t, deleteByID(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		assert.Equal(t, ListsWithDeleted+"\n", rec.Body.String())
+	}
+}

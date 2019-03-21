@@ -71,6 +71,7 @@ func deleteByID(c echo.Context) error {
 	}
 
 	lists = filterLists
+	fmt.Printf("%+v", lists)
 	return c.JSON(http.StatusOK, lists)
 }
 
