@@ -133,6 +133,24 @@ func TestDeleteByIDWhenGotParamShouldReturnAllListsWithoutIt(t *testing.T) {
 		assert.Equal(t, ListsWithDeleted+"\n", rec.Body.String())
 	}
 }
+func TestDeleteByIDWHenGotWrongParamShouldReturnNotfoundID(t *testing.T) {
+	//.Setup
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodDelete, "/", nil)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/todos/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("10")
+	lists = mockAllLists
+
+	//.Assertions
+	if assert.NoError(t, deleteByID(c)) {
+		assert.Equal(t, http.StatusNotFound, rec.Code)
+		assert.Equal(t, NotFoundID+"\n", rec.Body.String())
+	}
+}
 
 func TestUpdateByIDWhenGotParamAndBodyShouldReturnUpdatedList(t *testing.T) {
 	//.Setup
