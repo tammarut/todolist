@@ -33,9 +33,7 @@ var (
 	AList            = `{"id":"2","title":"play game"}`
 	ListsWithDeleted = `[{"id":"1","title":"excercise"},{"id":"3","title":"sleeping"}]`
 	ListsWithUpdated = `[{"id":"1","title":"excercise"},{"id":"2","title":"coding todolist"},{"id":"3","title":"sleeping"}]`
-	NotFoundID       = map[string]string{
-		"message": "Not found this ID!",
-	}
+	NotFoundID       = `{"message":"Not found this ID!"}`
 )
 
 func TestHelloShouldReturnHellotodolist(t *testing.T) {
@@ -82,6 +80,24 @@ func TestGetListByIDWhenGotParamShouldReturnOneList(t *testing.T) {
 	if assert.NoError(t, getListByID(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, AList+"\n", rec.Body.String())
+	}
+}
+func TestGetListByIDWhenGotWrongParamShouldReturnNotFoundID(t *testing.T) {
+	//.Setup
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/todos/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("10")
+	lists = mockAllLists
+
+	//.Assertions
+	if assert.NoError(t, getListByID(c)) {
+		assert.Equal(t, http.StatusNotFound, rec.Code)
+		assert.Equal(t, NotFoundID+"\n", rec.Body.String())
 	}
 }
 
@@ -152,6 +168,6 @@ func UpdateByIDWhenGotWrongParamShouldReturnNotfoundID(t *testing.T) {
 	//.Assertions
 	if assert.NoError(t, updateByID(c)) {
 		assert.Equal(t, http.StatusNotFound, rec.Code)
-		assert.Equal(t, NotFoundID, rec.Body.String)
+		assert.Equal(t, NotFoundID, rec.Body.String())
 	}
 }
