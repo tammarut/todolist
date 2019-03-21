@@ -87,7 +87,7 @@ func updateByID(c echo.Context) error {
 			fmt.Printf("Before: %+v\n", lists[i])
 			lists[i].Title = newtitle.Title
 			fmt.Printf("After: %+v\n", lists[i])
-			return c.JSON(http.StatusOK, lists[i])
+			return c.JSON(http.StatusOK, lists)
 		}
 	}
 
