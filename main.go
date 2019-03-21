@@ -58,7 +58,9 @@ func getListByID(c echo.Context) error { //=> get 1 list by id
 			return c.JSON(http.StatusOK, lists[i])
 		}
 	}
-	return c.JSON(http.StatusNotFound, "Not found this id")
+	return c.JSON(http.StatusNotFound, map[string]string{
+		"message": "Not found this ID!",
+	})
 }
 func deleteByID(c echo.Context) error {
 	id := c.Param("id")
