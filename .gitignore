@@ -1,6 +1,21 @@
 
-# Created by https://www.gitignore.io/api/go,windows
-# Edit at https://www.gitignore.io/?templates=go,windows
+# Created by https://www.gitignore.io/api/go,git,linux,windows
+# Edit at https://www.gitignore.io/?templates=go,git,linux,windows
+
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
+
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
 
 ### Go ###
 # Binaries for programs and plugins
@@ -19,6 +34,21 @@
 ### Go Patch ###
 /vendor/
 /Godeps/
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -45,4 +75,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/go,windows
+# End of https://www.gitignore.io/api/go,git,linux,windows
