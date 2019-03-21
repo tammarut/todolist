@@ -69,12 +69,15 @@ func deleteByID(c echo.Context) error {
 	for _, item := range lists {
 		if item.ID != id {
 			filterLists = append(filterLists, item)
+			lists = filterLists
+			fmt.Printf("%+v", lists)
+			return c.JSON(http.StatusOK, lists)
 		}
 	}
 
-	lists = filterLists
-	fmt.Printf("%+v", lists)
-	return c.JSON(http.StatusOK, lists)
+	return c.JSON(http.StatusNotFound, map[string]string{
+		"message": "Not found this ID!",
+	})
 }
 
 func updateByID(c echo.Context) error {
