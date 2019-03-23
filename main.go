@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/tammarut/todolist/handler"
 	"github.com/tammarut/todolist/model"
 )
 
@@ -26,7 +27,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Routes
-	e.GET("/", Hello)                  //=> Hello world
+	e.GET("/", handler.Hello)          //=> Hello world
 	e.GET("/todos/:id", getListByID)   //=> get list by id
 	e.GET("/todos", getAllLists)       //=> get all lists
 	e.POST("/todos", saveList)         //=> post list from body
@@ -37,9 +38,6 @@ func main() {
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func Hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello todolist")
-}
 func saveList(c echo.Context) error { //=> post only 1
 	var l model.List
 	if err := c.Bind(&l); err != nil {
