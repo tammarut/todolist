@@ -10,7 +10,10 @@ import (
 	"github.com/tammarut/todolist/model"
 )
 
-var lists []model.List
+var (
+	lists     []model.List
+	logFormat = `[${time_rfc3339}]  status=${status}  ${method} ${host}${path}  ${latency_human} ${latency}` + "\n"
+)
 
 func main() {
 	// Echo instance
@@ -18,7 +21,7 @@ func main() {
 
 	// MiddlewareW
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{ //=> Custom log
-		Format: `[${time_rfc3339}]  status=${status}  ${method} ${host}${path}  ${latency_human} ${latency}` + "\n", //=> [2019-02-11T23:56:04+07:00]  status=200  GET localhost:1323/admin/main  0s
+		Format: logFormat, //=> [2019-02-11T23:56:04+07:00]  status=200  GET localhost:1323/admin/main  0s
 	}))
 	e.Use(middleware.Recover())
 
