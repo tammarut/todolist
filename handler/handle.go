@@ -11,9 +11,12 @@ import (
 
 var lists []model.List
 
+//Hello is first page.
 func Hello(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello todolist")
 }
+
+//SaveList is create a list.
 func SaveList(c echo.Context) error { //=> post only 1
 	var l model.List
 	if err := c.Bind(&l); err != nil {
@@ -24,10 +27,12 @@ func SaveList(c echo.Context) error { //=> post only 1
 	return c.JSON(http.StatusCreated, "We've created your list!")
 }
 
+//GetAllLists is reponse all lists.
 func GetAllLists(c echo.Context) error { //=> get all lists: OK
 	return c.JSON(http.StatusOK, &lists)
 }
 
+//GetListByID is receive param and response id's list.
 func GetListByID(c echo.Context) error { //=> get 1 list by id
 	id := c.Param("id")
 	for i := range lists {
@@ -39,6 +44,8 @@ func GetListByID(c echo.Context) error { //=> get 1 list by id
 		"message": "Not found this ID!",
 	})
 }
+
+//DeleteByID is delete a list by param(id)
 func DeleteByID(c echo.Context) error {
 	id := c.Param("id")
 
@@ -60,6 +67,7 @@ func DeleteByID(c echo.Context) error {
 
 }
 
+//UpdateByID is update data list by param(id)
 func UpdateByID(c echo.Context) error {
 	newtitle := new(model.List)
 	if err := c.Bind(newtitle); err != nil {
